@@ -1,0 +1,177 @@
+# Home Assistant Docker 部署指南
+
+## 🚀 快速开始（3 步完成）
+
+### 第 1 步：安装 Docker Desktop
+
+方法 1：从官网下载（推荐）
+访问：https://www.docker.com/products/docker-desktop
+下载并安装 Docker Desktop
+
+方法 2：使用命令行下载
+在终端执行：
+```
+# Apple Silicon (M1/M2/M3)
+curl -L -o ~/Downloads/Docker.dmg https://desktop.docker.com/mac/main/arm64/Docker.dmg
+open ~/Downloads/Docker.dmg
+
+# 然后将 Docker 拖到应用程序文件夹
+```
+
+安装完成后，启动 Docker Desktop 应用（在应用程序文件夹中）。
+
+### 第 2 步：一键部署
+
+在终端执行：
+```
+./deploy.sh
+```
+
+脚本会自动完成所有配置，大约需要 10-15 分钟。
+
+### 第 3 步：访问
+
+打开浏览器访问：
+```
+http://localhost:8123
+```
+
+首次访问需要创建管理员账户。
+
+## ✅ 完成！
+
+现在你已经有了一个完整的 Home Assistant 系统，支持：
+- ✅ HomeKit（可以在 iPhone 家庭 app 中使用）
+- ✅ 米家设备
+- ✅ 所有官方集成
+
+## 📱 配置 HomeKit
+
+⚠️ 由于 macOS Docker 限制，HomeKit 需要额外配置。
+
+推荐方案：
+1. Home Assistant Cloud（付费，最简单）
+2. Homebridge 桥接（免费，需配置）
+
+详细说明请查看：HOMEKIT_SUPPORT.md
+
+## 🏡 配置米家（推荐使用 HACS 方式）
+
+### 快速步骤：
+
+**第一步：安装 HACS**
+```bash
+docker exec -it homeassistant bash
+wget -O - https://get.hacs.xyz | bash -
+exit
+docker-compose restart homeassistant
+```
+
+**第二步：配置 HACS**
+1. 访问 http://localhost:8123
+2. 进入"设置" > "设备与服务"
+3. 配置 HACS（需要 GitHub 账号授权）
+
+**第三步：安装 Xiaomi Home**
+1. 打开 HACS
+2. 搜索并下载 "Xiaomi Home"
+3. 重启 Home Assistant
+
+**第四步：添加设备**
+1. 进入"设置" > "设备与服务"
+2. 添加 "Xiaomi Home" 集成
+3. 选择扫码登录（推荐）或账号密码登录
+4. 等待设备发现
+
+⚠️ **重要提示**：
+- 如果跳转的网址包含 homeassistant.local，请手动改为 localhost
+- 推荐使用扫码登录，避免服务器区域选择问题
+- 详细步骤请查看：docs/XIAOMI_SETUP.md
+
+## 🔧 常用命令
+
+启动服务：
+```
+docker-compose up -d
+```
+
+停止服务：
+```
+docker-compose down
+```
+
+查看日志：
+```
+docker-compose logs -f
+```
+
+更新到最新版本：
+```
+docker-compose pull
+docker-compose up -d
+```
+
+## 📦 备份和恢复
+
+创建备份：
+```
+./scripts/backup-homeassistant.sh
+```
+
+恢复备份：
+```
+./scripts/restore-homeassistant.sh ~/homeassistant-backups/ha_backup_XXXXXX.tar.gz
+```
+
+## 🔄 从旧的 Core 安装迁移
+
+如果你之前使用 Python 虚拟环境安装的 Home Assistant Core：
+
+1. 备份旧配置：
+```
+./scripts/backup-homeassistant.sh
+```
+
+2. 停止旧服务：
+```
+launchctl stop com.homeassistant.server
+launchctl unload ~/Library/LaunchAgents/com.homeassistant.server.plist
+```
+
+3. 部署 Docker 版本：
+```
+./deploy.sh
+```
+
+4. 恢复配置：
+```
+docker-compose down
+./scripts/restore-homeassistant.sh ~/homeassistant-backups/ha_backup_XXXXXX.tar.gz
+docker-compose up -d
+```
+
+## ❓ 遇到问题？
+
+查看详细文档：
+- README.md - 完整使用说明
+- docs/HOMEKIT_SETUP.md - HomeKit 详细配置
+- docs/XIAOMI_SETUP.md - 米家详细配置
+- docs/TROUBLESHOOTING.md - 常见问题解决
+
+查看日志：
+```
+docker-compose logs -f homeassistant
+```
+
+## 📞 获取帮助
+
+- Home Assistant 官方文档：https://www.home-assistant.io/docs/
+- 中文社区论坛：https://bbs.hassbian.com/
+- 官方社区：https://community.home-assistant.io/
+
+---
+
+**快速开始**: ./deploy.sh
+**访问地址**: http://localhost:8123
+**支持 HomeKit**: ✅
+**支持米家**: ✅

@@ -1,0 +1,46 @@
+# Home Assistant 敏感配置文件
+config/.storage/
+config/secrets.yaml
+config/home-assistant.log*
+config/*.db
+config/*.db-shm
+config/*.db-wal
+config/.ha_run.lock
+config/.HA_VERSION
+config/.cloud/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# 虚拟环境
+venv/
+ENV/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# 备份文件
+*.bak
+*.backup
+*~
+
+# 日志文件
+*.log
+
+# 临时文件
+*.tmp
+.cache/
