@@ -8,6 +8,7 @@ config/*.db-wal
 config/.ha_run.lock
 config/.HA_VERSION
 config/.cloud/
+config/*
 
 # Python
 __pycache__/
